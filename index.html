@@ -10,63 +10,69 @@
 <body>
   <div id="app">
 
-    <!-- INTRO -->
-    <section id="screen-intro" class="screen active">
-      <div class="intro-content">
+    <!-- LOGIN -->
+    <section id="screen-login" class="screen active">
+      <div class="login-box">
         <div class="cursed-mark">呪</div>
         <h1 class="title">SOUL FIGHTERS</h1>
-        <p class="subtitle">Tokyo Jujutsu High Arena</p>
+        <p class="subtitle">Tokyo Jujutsu High</p>
 
-        <div class="profile-box" id="profile-box">
-          <label>Sorcerer Name</label>
-          <input type="text" id="player-name-input" maxlength="16" placeholder="Enter your name..." />
-          <button class="btn primary" id="btn-create-profile">CREATE PROFILE</button>
+        <div id="login-form">
+          <input type="text" id="login-user" placeholder="Username" maxlength="16" />
+          <input type="password" id="login-pass" placeholder="Password" maxlength="24" />
+          <button class="btn primary" id="btn-login">LOGIN</button>
+          <p class="or">or</p>
+          <button class="btn" id="btn-show-register">CREATE ACCOUNT</button>
         </div>
 
-        <div id="welcome-box" style="display:none">
-          <p class="welcome">Welcome back, <span id="welcome-name"></span></p>
-          <button class="btn primary" id="btn-start">ENTER THE DOMAIN</button>
-          <button class="btn small" id="btn-reset-profile" style="margin-top:12px">Switch Profile</button>
+        <div id="register-form" style="display:none">
+          <input type="text" id="reg-user" placeholder="Choose Username" maxlength="16" />
+          <input type="password" id="reg-pass" placeholder="Choose Password" maxlength="24" />
+          <input type="password" id="reg-pass2" placeholder="Confirm Password" maxlength="24" />
+          <button class="btn primary" id="btn-register">REGISTER</button>
+          <button class="btn small" id="btn-show-login" style="margin-top:10px">Back to Login</button>
         </div>
 
         <p class="credit-small">Created by <span>BEYOND</span></p>
       </div>
     </section>
 
-    <!-- CHARACTER SELECT -->
+    <!-- SELECT -->
     <section id="screen-select" class="screen">
       <header class="top-bar">
         <div class="soul-display">
           <span class="soul-icon">◈</span>
-          <span id="soul-count">0</span> Soul Energy
+          <span id="soul-count">0</span> SE
         </div>
-        <div class="player-tag" id="player-tag">—</div>
+        <div class="user-area">
+          <span id="user-display">—</span>
+          <button class="btn small" id="btn-logout">Logout</button>
+        </div>
       </header>
 
-      <h2 class="section-title">CHOOSE YOUR SORCERER</h2>
+      <h2 class="section-title">SORCERER ROSTER</h2>
       <div class="char-grid" id="char-grid"></div>
 
       <div class="select-actions">
         <button class="btn primary" id="btn-fight" disabled>START MISSION</button>
-        <p class="hint">Win fights → earn Soul Energy → unlock stronger forms</p>
+        <p class="hint">Fight → Earn Soul Energy → Unlock stronger sorcerers</p>
       </div>
     </section>
 
     <!-- BATTLE -->
     <section id="screen-battle" class="screen">
       <div class="school-bg"></div>
-
       <div class="battle-header">
         <div class="fighter player-side">
           <div class="name" id="player-name">Yuji</div>
           <div class="hp-bar"><div class="hp-fill" id="player-hp"></div></div>
-          <div class="hp-text" id="player-hp-text">100 / 100</div>
+          <div class="hp-text" id="player-hp-text">100/100</div>
         </div>
         <div class="vs">VS</div>
         <div class="fighter enemy-side">
-          <div class="name" id="enemy-name">Cursed Spirit</div>
+          <div class="name" id="enemy-name">Curse</div>
           <div class="hp-bar"><div class="hp-fill enemy" id="enemy-hp"></div></div>
-          <div class="hp-text" id="enemy-hp-text">100 / 100</div>
+          <div class="hp-text" id="enemy-hp-text">100/100</div>
         </div>
       </div>
 
@@ -81,14 +87,14 @@
       <div class="moves" id="moves-container"></div>
     </section>
 
-    <!-- ATTACK POPUP CARD -->
+    <!-- ATTACK POPUP -->
     <div id="attack-popup" class="attack-popup hidden">
       <div class="popup-card">
         <div class="popup-img" id="popup-img"></div>
         <div class="popup-info">
           <div class="popup-char" id="popup-char">Yuji Itadori</div>
           <div class="popup-move" id="popup-move">BLACK FLASH</div>
-          <div class="popup-desc" id="popup-desc">Critical cursed energy impact</div>
+          <div class="popup-desc" id="popup-desc">Critical cursed energy</div>
           <div class="popup-dmg" id="popup-dmg">34 DMG</div>
         </div>
       </div>
@@ -99,19 +105,16 @@
       <div class="result-content">
         <div class="result-title" id="result-title">VICTORY</div>
         <div class="result-soul" id="result-soul">+85 Soul Energy</div>
-
         <div class="beyond-credit">
           <p>Created by</p>
           <h2>BEYOND</h2>
           <p class="small">Tokyo Jujutsu High • Soul Fighters</p>
         </div>
-
         <button class="btn primary" id="btn-again">FIGHT AGAIN</button>
-        <button class="btn" id="btn-menu">CHARACTER SELECT</button>
+        <button class="btn" id="btn-menu">ROSTER</button>
       </div>
     </section>
   </div>
-
   <script src="game.js"></script>
 </body>
 </html>
