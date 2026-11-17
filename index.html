@@ -10,7 +10,6 @@
 <body>
   <div id="app">
 
-    <!-- LOGIN -->
     <section id="screen-login" class="screen active">
       <div class="login-box">
         <div class="cursed-mark">呪</div>
@@ -18,8 +17,8 @@
         <p class="subtitle">Tokyo Jujutsu High</p>
 
         <div id="login-form">
-          <input type="text" id="login-user" placeholder="Username" maxlength="16" />
-          <input type="password" id="login-pass" placeholder="Password" maxlength="24" />
+          <input type="text" id="login-user" placeholder="Username" maxlength="16" autocomplete="username" />
+          <input type="password" id="login-pass" placeholder="Password" maxlength="24" autocomplete="current-password" />
           <button class="btn primary" id="btn-login">LOGIN</button>
           <p class="or">or</p>
           <button class="btn" id="btn-show-register">CREATE ACCOUNT</button>
@@ -37,7 +36,6 @@
       </div>
     </section>
 
-    <!-- SELECT -->
     <section id="screen-select" class="screen">
       <header class="top-bar">
         <div class="soul-display">
@@ -51,15 +49,15 @@
       </header>
 
       <h2 class="section-title">SORCERER ROSTER</h2>
+      <p id="status-msg" class="status-msg"></p>
       <div class="char-grid" id="char-grid"></div>
 
       <div class="select-actions">
         <button class="btn primary" id="btn-fight" disabled>START MISSION</button>
-        <p class="hint">Fight → Earn Soul Energy → Unlock stronger sorcerers</p>
+        <p class="hint">Win fights to earn Soul Energy. Tap UNLOCK on locked cards.</p>
       </div>
     </section>
 
-    <!-- BATTLE -->
     <section id="screen-battle" class="screen">
       <div class="school-bg"></div>
       <div class="battle-header">
@@ -87,7 +85,6 @@
       <div class="moves" id="moves-container"></div>
     </section>
 
-    <!-- ATTACK POPUP -->
     <div id="attack-popup" class="attack-popup hidden">
       <div class="popup-card">
         <div class="popup-img" id="popup-img"></div>
@@ -100,7 +97,6 @@
       </div>
     </div>
 
-    <!-- RESULT -->
     <section id="screen-result" class="screen">
       <div class="result-content">
         <div class="result-title" id="result-title">VICTORY</div>
