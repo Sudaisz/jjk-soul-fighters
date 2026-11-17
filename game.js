@@ -64,12 +64,28 @@ function fallbackImg(seed) {
 
 async function loadJikanImages() {
   const status = document.getElementById('status-msg');
+  // Search all relevant JJK anime entries so later characters (Yuta/Toji)
+  // are not silently replaced by unrelated first-name matches.
   const endpoints = [
-    'https://jikan.lucashdo.com/v1/anime/40748/characters',
-    'https://api.jikan.moe/v4/anime/40748/characters'
+    'https://api.jikan.moe/v4/anime/40748/characters', // Jujutsu Kaisen S1
+    'https://api.jikan.moe/v4/anime/51009/characters', // Jujutsu Kaisen S2
+    'https://api.jikan.moe/v4/anime/48561/characters'  // Jujutsu Kaisen 0
   ];
+  const normalize = value => String(value || '')
+    .normalize('NFKD')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, ' ')
+    .trim()
+    .replace(/\\s+/g, ' ');
+  const wanted = new Map();
+  CHARACTERS.forEach(c => {
+    const key = normalize(c.name);
+    if (!wanted.has(key)) wanted.set(key, []);
+    wanted.get(key).push(c.id);
+  });
 
-  if (status) status.textContent = 'Loading character images...';
+  if (status) status.textContent = 'Loading verified JJK character images...';
+  let loaded = 0;
 
   for (const endpoint of endpoints) {
     try {
@@ -82,40 +98,38 @@ async function loadJikanImages() {
         clearTimeout(timeout);
       }
       if (!res.ok) throw new Error('Image API returned ' + res.status);
-
       const payload = await res.json();
-      const list = Array.isArray(payload.data) ? payload.data : Array.isArray(payload) ? payload : [];
-      if (!list.length) throw new Error('Image API returned no characters');
-
+      const list = Array.isArray(payload.data) ? payload.data : [];
       list.forEach(item => {
         const character = item.character || item;
-        const name = (character.name || '').toLowerCase();
+        const key = normalize(character.name);
+        const ids = wanted.get(key);
+        if (!ids || !ids.length) return;
         const images = character.images || item.images || {};
         const url = images.webp?.image_url || images.jpg?.image_url || images.image_url;
         if (!url) return;
-
-        CHARACTERS.forEach(c => {
-          const search = c.search.toLowerCase();
-          const firstName = c.name.split(' ')[0].toLowerCase();
-          if (name.includes(search) || name.includes(firstName)) {
-            if (!imageCache[c.id]) imageCache[c.id] = url;
+        ids.forEach(id => {
+          if (!imageCache[id]) {
+            imageCache[id] = url;
+            loaded++;
           }
         });
       });
-
-      if (Object.keys(imageCache).length > 0) {
-        if (status) status.textContent = 'Character images loaded';
-        setTimeout(() => { if (status) status.textContent = ''; }, 1500);
-        return;
+      // Jikan rate-limits requests; pause before trying the next season.
+      if (endpoint !== endpoints[endpoints.length - 1]) {
+        await new Promise(resolve => setTimeout(resolve, 1100));
       }
-      throw new Error('No matching character images found');
     } catch (err) {
       console.warn('Character image source failed:', endpoint, err);
     }
   }
 
-  if (status) status.textContent = 'Using fallback images';
-  setTimeout(() => { if (status) status.textContent = ''; }, 2000);
+  if (status) {
+    status.textContent = loaded
+      ? loaded + ' correct character image(s) loaded'
+      : 'Character image service unavailable — retry later';
+    setTimeout(() => { if (status) status.textContent = ''; }, 2500);
+  }
 }
 
 function getCharImg(c) {
