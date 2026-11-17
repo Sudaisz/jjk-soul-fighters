@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>JJK Soul Fighters | Beyond</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div id="app">
+    <!-- INTRO -->
+    <section id="screen-intro" class="screen active">
+      <div class="intro-content">
+        <div class="cursed-mark">呪</div>
+        <h1 class="title">SOUL FIGHTERS</h1>
+        <p class="subtitle">Jujutsu Kaisen Arena</p>
+        <p class="tagline">Fight. Earn Soul Energy. Unlock the strongest.</p>
+        <button class="btn primary" id="btn-start">ENTER THE DOMAIN</button>
+        <p class="credit-small">A game by <span>BEYOND</span></p>
+      </div>
+    </section>
+
+    <!-- CHARACTER SELECT -->
+    <section id="screen-select" class="screen">
+      <header class="top-bar">
+        <div class="soul-display">
+          <span class="soul-icon">◈</span>
+          <span id="soul-count">0</span> Soul Energy
+        </div>
+        <button class="btn small" id="btn-back-intro">←</button>
+      </header>
+      <h2 class="section-title">CHOOSE YOUR SORCERER</h2>
+      <div class="char-grid" id="char-grid"></div>
+      <div class="select-actions">
+        <button class="btn primary" id="btn-fight" disabled>FIGHT BOT</button>
+        <p class="hint">Win battles to earn Soul Energy and unlock Gojo, Sukuna & more</p>
+      </div>
+    </section>
+
+    <!-- BATTLE -->
+    <section id="screen-battle" class="screen">
+      <div class="battle-header">
+        <div class="fighter player-side">
+          <div class="name" id="player-name">Yuji</div>
+          <div class="hp-bar"><div class="hp-fill" id="player-hp"></div></div>
+          <div class="hp-text" id="player-hp-text">100 / 100</div>
+        </div>
+        <div class="vs">VS</div>
+        <div class="fighter enemy-side">
+          <div class="name" id="enemy-name">Cursed Spirit</div>
+          <div class="hp-bar"><div class="hp-fill enemy" id="enemy-hp"></div></div>
+          <div class="hp-text" id="enemy-hp-text">100 / 100</div>
+        </div>
+      </div>
+
+      <div class="arena">
+        <div class="fighter-sprite player" id="player-sprite">👊</div>
+        <div class="effect" id="battle-effect"></div>
+        <div class="fighter-sprite enemy" id="enemy-sprite">👹</div>
+      </div>
+
+      <div class="log" id="battle-log">Battle begins...</div>
+
+      <div class="moves" id="moves-container">
+        <!-- attack buttons injected -->
+      </div>
+    </section>
+
+    <!-- VICTORY / DEFEAT -->
+    <section id="screen-result" class="screen">
+      <div class="result-content">
+        <div class="result-title" id="result-title">VICTORY</div>
+        <div class="result-soul" id="result-soul">+85 Soul Energy</div>
+        <div class="beyond-credit">
+          <p>Created by</p>
+          <h2>BEYOND</h2>
+          <p class="small">Thank you for playing Soul Fighters</p>
+        </div>
+        <button class="btn primary" id="btn-again">FIGHT AGAIN</button>
+        <button class="btn" id="btn-menu">CHARACTER SELECT</button>
+      </div>
+    </section>
+  </div>
+
+  <script src="game.js"></script>
+</body>
+</html>
