@@ -64,31 +64,58 @@ function fallbackImg(seed) {
 
 async function loadJikanImages() {
   const status = document.getElementById('status-msg');
-  try {
-    if (status) status.textContent = 'Loading character images...';
-    const res = await fetch('https://api.jikan.moe/v4/anime/40748/characters');
-    if (!res.ok) throw new Error('Jikan API error');
-    const data = await res.json();
-    const list = data.data || [];
+  const endpoints = [
+    'https://jikan.lucashdo.com/v1/anime/40748/characters',
+    'https://api.jikan.moe/v4/anime/40748/characters'
+  ];
 
-    list.forEach(item => {
-      const name = (item.character?.name || '').toLowerCase();
-      const url = item.character?.images?.jpg?.image_url || item.character?.images?.webp?.image_url;
-      if (!url) return;
-      CHARACTERS.forEach(c => {
-        if (name.includes(c.search.toLowerCase()) || name.includes(c.name.split(' ')[0].toLowerCase())) {
-          if (!imageCache[c.id]) imageCache[c.id] = url;
-        }
+  if (status) status.textContent = 'Loading character images...';
+
+  for (const endpoint of endpoints) {
+    try {
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 9000);
+      let res;
+      try {
+        res = await fetch(endpoint, { signal: controller.signal, cache: 'no-store' });
+      } finally {
+        clearTimeout(timeout);
+      }
+      if (!res.ok) throw new Error('Image API returned ' + res.status);
+
+      const payload = await res.json();
+      const list = Array.isArray(payload.data) ? payload.data : Array.isArray(payload) ? payload : [];
+      if (!list.length) throw new Error('Image API returned no characters');
+
+      list.forEach(item => {
+        const character = item.character || item;
+        const name = (character.name || '').toLowerCase();
+        const images = character.images || item.images || {};
+        const url = images.webp?.image_url || images.jpg?.image_url || images.image_url;
+        if (!url) return;
+
+        CHARACTERS.forEach(c => {
+          const search = c.search.toLowerCase();
+          const firstName = c.name.split(' ')[0].toLowerCase();
+          if (name.includes(search) || name.includes(firstName)) {
+            if (!imageCache[c.id]) imageCache[c.id] = url;
+          }
+        });
       });
-    });
 
-    if (status) status.textContent = 'Images loaded';
-    setTimeout(() => { if (status) status.textContent = ''; }, 1500);
-  } catch (err) {
-    console.warn('Jikan failed, using fallbacks', err);
-    if (status) status.textContent = 'Using fallback images';
-    setTimeout(() => { if (status) status.textContent = ''; }, 2000);
+      if (Object.keys(imageCache).length > 0) {
+        if (status) status.textContent = 'Character images loaded';
+        setTimeout(() => { if (status) status.textContent = ''; }, 1500);
+        return;
+      }
+      throw new Error('No matching character images found');
+    } catch (err) {
+      console.warn('Character image source failed:', endpoint, err);
+    }
   }
+
+  if (status) status.textContent = 'Using fallback images';
+  setTimeout(() => { if (status) status.textContent = ''; }, 2000);
 }
 
 function getCharImg(c) {
