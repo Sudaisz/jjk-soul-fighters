@@ -10,7 +10,7 @@
 <body>
   <div id="app">
 
-    <!-- INTRO / PROFILE -->
+    <!-- INTRO -->
     <section id="screen-intro" class="screen active">
       <div class="intro-content">
         <div class="cursed-mark">呪</div>
@@ -48,7 +48,7 @@
 
       <div class="select-actions">
         <button class="btn primary" id="btn-fight" disabled>START MISSION</button>
-        <p class="hint">Win fights → earn Soul Energy → unlock stronger forms & characters</p>
+        <p class="hint">Win fights → earn Soul Energy → unlock stronger forms</p>
       </div>
     </section>
 
@@ -71,16 +71,28 @@
       </div>
 
       <div class="arena" id="arena">
-        <div class="fighter-sprite player" id="player-sprite">👊</div>
+        <div class="fighter-portrait player" id="player-portrait"></div>
         <div class="damage-float" id="damage-float"></div>
         <div class="effect" id="battle-effect"></div>
-        <div class="fighter-sprite enemy" id="enemy-sprite">👹</div>
+        <div class="fighter-portrait enemy" id="enemy-portrait"></div>
       </div>
 
       <div class="log" id="battle-log">Battle begins...</div>
-
       <div class="moves" id="moves-container"></div>
     </section>
+
+    <!-- ATTACK POPUP CARD -->
+    <div id="attack-popup" class="attack-popup hidden">
+      <div class="popup-card">
+        <div class="popup-img" id="popup-img"></div>
+        <div class="popup-info">
+          <div class="popup-char" id="popup-char">Yuji Itadori</div>
+          <div class="popup-move" id="popup-move">BLACK FLASH</div>
+          <div class="popup-desc" id="popup-desc">Critical cursed energy impact</div>
+          <div class="popup-dmg" id="popup-dmg">34 DMG</div>
+        </div>
+      </div>
+    </div>
 
     <!-- RESULT -->
     <section id="screen-result" class="screen">
